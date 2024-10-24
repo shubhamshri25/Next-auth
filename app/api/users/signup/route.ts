@@ -6,13 +6,14 @@ import { sendEmail } from "@/helpers/mailer";
 
 connectDB();
 
-export async function POST(req: NextRequest) {
+export async function POST(request: NextRequest) {
   try {
-    const reqBody = await req.json();
+    const reqBody = await request.json();
     const { username, email, password } = reqBody;
 
-    console.log(reqBody);
+    // console.log(reqBody);
 
+    //check if user already exists
     const user = await User.findOne({ email });
 
     if (user) {
@@ -22,20 +23,21 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // hashing the password
+    //hash password
     const salt = await bcryptjs.genSalt(10);
     const hashedPassword = await bcryptjs.hash(password, salt);
 
     const newUser = new User({
-      email,
       username,
+      email,
       password: hashedPassword,
     });
 
     const savedUser = await newUser.save();
-    console.log(savedUser);
+    // console.log(savedUser);
 
-    //sending the mail
+    //send verification email
+
     await sendEmail({ email, emailType: "VERIFY", userId: savedUser._id });
 
     return NextResponse.json({

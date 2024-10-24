@@ -23,13 +23,13 @@ export const sendEmail = async ({ email, emailType, userId }: any) => {
       host: "sandbox.smtp.mailtrap.io",
       port: 2525,
       auth: {
-        user: process.env.USER_AUTH,
-        pass: process.env.USER_AUTH_PASS,
+        user: "6513c8bdb795b6",
+        pass: "6ff6636cdec379",
       },
     });
 
     const mailOptions = {
-      from: "shubham@gmail.com",
+      from: "shubhshri25@gmail.com",
       to: email,
       subject:
         emailType === "VERIFY" ? "Verify your email" : "Reset your password",
